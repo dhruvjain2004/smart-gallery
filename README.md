@@ -90,9 +90,28 @@ The Canvas API is used for image processing and manipulation:
 
 ## Deployment to Vercel
 
-This application is configured for easy deployment to Vercel. The configuration has been updated to use Vercel's Project Settings for build and development settings instead of custom build configurations.
+### Important Deployment Notes
 
-Follow these steps:
+To ensure proper deployment on Vercel, follow these steps carefully:
+
+1. **Build Process**: The project includes a custom `build.js` script that prepares files for Vercel deployment by copying all necessary files to the `public` directory.
+
+2. **Vercel Configuration**: The `vercel.json` file is configured to serve static files from the `public` directory:
+   ```json
+   {
+     "version": 2,
+     "public": true,
+     "outputDirectory": "public",
+     "routes": [
+       { "handle": "filesystem" },
+       { "src": "/(.*)", "dest": "/index.html" }
+     ]
+   }
+   ```
+
+3. **Local Images**: The application uses local images as fallbacks when remote images fail to load. These are stored in the `images` directory and are copied to `public/images` during the build process.
+
+### Deployment Steps
 
 1. Install Vercel CLI (if not already installed):
    ```
@@ -104,12 +123,16 @@ Follow these steps:
    vercel login
    ```
 
-3. Deploy from the project directory:
+3. Run Build Script (important step!):
+   ```
+   npm run build
+   ```
+   This creates the `public` directory with all necessary files.
+
+4. Deploy from the project directory:
    ```
    vercel
    ```
-
-4. Follow the prompts to complete deployment
 
 5. To deploy to production:
    ```
@@ -121,8 +144,37 @@ Alternatively, you can deploy directly from the Vercel dashboard:
 1. Go to [vercel.com](https://vercel.com)
 2. Create a new project
 3. Import your repository or upload the files
-4. Deploy
+4. Make sure to set the following in Project Settings:
+   - Build Command: `npm run build`
+   - Output Directory: `public`
+   - Framework Preset: "Other" or "Static Site"
 
-### Build Process
+### Troubleshooting Deployment Issues
 
-The project includes a custom build script (`build.js`) that creates a `public` directory and copies all HTML and JS files to it. This ensures compatibility with Vercel's default static site deployment process.
+If you encounter issues with your Vercel deployment:
+
+1. **Check Build Logs**: Verify that the build process completed successfully and all files were copied to the `public` directory.
+
+2. **Verify File Structure**: Ensure that your project has the correct file structure:
+   ```
+   project/
+   ├── app.js
+   ├── build.js
+   ├── images/
+   │   └── placeholder.svg
+   ├── index.html
+   ├── package.json
+   ├── public/  (created during build)
+   │   ├── app.js
+   │   ├── images/
+   │   │   └── placeholder.svg
+   │   └── index.html
+   └── vercel.json
+   ```
+
+3. **Check Vercel Settings**: In your Vercel project settings, ensure that:
+   - The build command is set to `npm run build`
+   - The output directory is set to `public`
+   - The framework preset is set to "Other" or "Static Site"
+
+4. **Redeploy**: If you've made changes to fix issues, run `vercel --prod` to redeploy your application.

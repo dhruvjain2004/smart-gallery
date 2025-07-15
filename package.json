@@ -4,7 +4,7 @@
   "description": "A responsive image gallery that adapts to network conditions",
   "main": "app.js",
   "scripts": {
-    "start": "npx serve",
+    "start": "npm run build && npx serve public",
     "dev": "npx serve",
     "build": "node build.js"
   },

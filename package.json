@@ -1,0 +1,22 @@
+{
+  "name": "smart-image-gallery",
+  "version": "1.0.0",
+  "description": "A responsive image gallery that adapts to network conditions",
+  "main": "app.js",
+  "scripts": {
+    "start": "npx serve",
+    "dev": "npx serve",
+    "build": "node build.js"
+  },
+  "keywords": [
+    "gallery",
+    "images",
+    "adaptive",
+    "network"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "serve": "^14.2.1"
+  }
+}
